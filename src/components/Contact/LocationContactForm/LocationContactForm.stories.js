@@ -8,6 +8,8 @@ export default {
 };
 
 const Template = (args) => <LocationContactForm {...args} />;
+
+
 export const Default = Template.bind({});
 Default.args = {
   props: {

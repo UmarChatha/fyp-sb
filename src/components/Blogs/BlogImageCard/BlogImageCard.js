@@ -3,9 +3,9 @@ import React from 'react'
 function Card(prop) {    
     const {props,children, ...rest} = prop
 
-    const data={
+    const dataObj={
         title:{
-         text:"not mention",
+         text:"",
          class:""
         },
         img:{
@@ -13,42 +13,51 @@ function Card(prop) {
          class:""
         },
         body:{
-         text:"Not Mention",
+         text:"",
          class:""
         },
         header:{
-         text:"Not Mention",
+         text:"",
          class:""
         },
         button:{
-         text:"not given",
+         text:"",
          class:""
         },
         views:{
-         text:"0.0",
+         text:"",
          class:""
         }
    }
-    if(props==undefined){
-        props=data;
-    }
+  
+   const [data,setData] = React.useState(dataObj)
 
-    if(props.title==undefined || props.views==undefined){
-        props.title = props.title==undefined?data.title:props.title;
-        props.views = data.views;
-    }
+   const merge = (dst,src) => {
+     Object.keys(src).forEach((key) => {
+       if (!dst[key]) {
+         dst[key] = src[key];
+       } else if (typeof src[key] === 'object' && src[key] !== null && typeof dst[key] === 'object' && dst[key] !== null) {
+         merge(dst[key], src[key]);
+       }
+     })
+   }
+   React.useEffect( ()=>{
+     let p2 = JSON.parse(JSON.stringify(dataObj));
+     merge(p2,props)
+     setData(p2)
+   },[])
 
-   
+
   return (
     <div className="p-4 md:w-1/3" {...rest} >
     <div className="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden shadow-lg">
-      <img className="lg:h-48 md:h-36 w-full object-cover object-center" src={props.img.url} alt="blog" />
+      <img className="lg:h-48 md:h-36 w-full object-cover object-center" src={data.img.url} alt="blog" />
       <div className="p-6">
-        <h2 className={`${props.title.class} tracking-widest text-xs title-font font-medium text-gray-400 mb-1`}>{props.title.text}</h2>
-        <h1 className="title-font text-lg font-medium text-gray-900 mb-3">{props.header.text}</h1>
-        <p className="leading-relaxed mb-3">{props.body.text}</p>
+        <h2 className={`${data.title.class} tracking-widest text-xs title-font font-medium text-gray-400 mb-1`}>{data.title.text}</h2>
+        <h1 className="title-font text-lg font-medium text-gray-900 mb-3">{data.header.text}</h1>
+        <p className="leading-relaxed mb-3">{data.body.text}</p>
         <div className="flex items-center flex-wrap ">
-          <a className="text-indigo-500 inline-flex items-center md:mb-2 lg:mb-0">{props.button.text}
+          <a className="text-indigo-500 inline-flex items-center md:mb-2 lg:mb-0">{data.button.text}
             <svg className="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
               <path d="M5 12h14"></path>
               <path d="M12 5l7 7-7 7"></path>
@@ -59,7 +68,7 @@ function Card(prop) {
             <svg className="w-4 h-4 mr-1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
               <circle cx="12" cy="12" r="3"></circle>
-            </svg>{props.views.text}
+            </svg>{data.views.text}
           </span>
         </div>
       </div>

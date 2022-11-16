@@ -3,7 +3,7 @@ import React from 'react'
 function BlogDetailCard(prop) {
     const {props,children, ...rest} = prop;
 
-    const data={
+    const dataObj={
         title:{
          text:"not mention",
          class:""
@@ -23,40 +23,48 @@ function BlogDetailCard(prop) {
             }
         },
         body:{
-         text:"Not Mention",
+         text:"",
          class:""
         },
         header:{
-         text:"Not Mention",
+         text:"",
          class:""
         },
         button:{
-         text:"not given",
+         text:"",
          class:""
         },
         views:{
-         text:"0.0",
+         text:"",
          class:""
         }
    }
-    if(props==undefined){
-        props=data;
-    }
+    
+   const [data,setData] = React.useState(dataObj)
 
-    if(props.title==undefined || props.views==undefined){
-        props.title = props.title==undefined?data.title:props.title;
-        props.views = data.views;
-    }
-
+   const merge = (dst,src) => {
+     Object.keys(src).forEach((key) => {
+       if (!dst[key]) {
+         dst[key] = src[key];
+       } else if (typeof src[key] === 'object' && src[key] !== null && typeof dst[key] === 'object' && dst[key] !== null) {
+         merge(dst[key], src[key]);
+       }
+     })
+   }
+   React.useEffect( ()=>{
+     let p2 = JSON.parse(JSON.stringify(dataObj));
+     merge(p2,props)
+     setData(p2)
+   },[])
    
 
   return (
         <div class="p-12 md:w-1/2 flex flex-col items-start shadow-sm mt-5" {...rest}>
-        <span class="inline-block py-1 px-2 rounded bg-indigo-50 text-indigo-500 text-xs font-medium tracking-widest">{props.title.text}</span>
-        <h2 class="sm:text-3xl text-2xl title-font font-medium text-gray-900 mt-4 mb-4">{props.header.text}</h2>
-        <p class="leading-relaxed mb-8">{props.body.text}</p>
+        <span class="inline-block py-1 px-2 rounded bg-indigo-50 text-indigo-500 text-xs font-medium tracking-widest">{data.title.text}</span>
+        <h2 class="sm:text-3xl text-2xl title-font font-medium text-gray-900 mt-4 mb-4">{data.header.text}</h2>
+        <p class="leading-relaxed mb-8">{data.body.text}</p>
         <div class="flex items-center flex-wrap pb-4 mb-4 border-b-2 border-gray-100 mt-auto w-full">
-          <a class="text-indigo-500 inline-flex items-center">{props.button.text}
+          <a class="text-indigo-500 inline-flex items-center">{data.button.text}
             <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
               <path d="M5 12h14"></path>
               <path d="M12 5l7 7-7 7"></path>
@@ -66,16 +74,17 @@ function BlogDetailCard(prop) {
             <svg class="w-4 h-4 mr-1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
               <circle cx="12" cy="12" r="3"></circle>
-            </svg>{props.views.text}
+            </svg>{data.views.text}
           </span>
         </div>
         <a class="inline-flex items-center">
-          <img alt="image" src={props.user.img.url} class="w-12 h-12 rounded-full flex-shrink-0 object-cover object-center"/>
+          <img alt="image" src={data.user.img.url} class="w-12 h-12 rounded-full flex-shrink-0 object-cover object-center"/>
           <span class="flex-grow flex flex-col pl-4">
-            <span class="title-font font-medium text-gray-900">{props.user.name.text}</span>
-            <span class="text-gray-400 text-xs tracking-widest mt-0.5">{props.user.subtitle.text}</span>
+            <span class="title-font font-medium text-gray-900">{data.user.name.text}</span>
+            <span class="text-gray-400 text-xs tracking-widest mt-0.5">{data.user.subtitle.text}</span>
           </span>
         </a>
+        {children}
       </div>
     
   )

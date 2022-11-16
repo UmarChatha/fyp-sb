@@ -1,48 +1,91 @@
 import React from "react";
 
 function LocationContactForm(prop) {
-  const {props,children,handleClick,...rest} = prop;
+  const { props, children, handleClick, ...rest } = prop;
 
-  const [name,setName] = React.useState("");
-  const [message,setMessage] = React.useState("");
-  const [email,setEmail] = React.useState("");
+  const [name, setName] = React.useState("");
+  const [message, setMessage] = React.useState("");
+  const [email, setEmail] = React.useState("");
 
-  const [nameError,setNameError] = React.useState(false);
-  const [messageError,setMessageError] = React.useState(false);
-  const [emailError,setEmailError] = React.useState(false);
-  
-  const handleSubmit = ()=>{
-    if(name===""){
-        setNameError(true)
-    }else{
-        setNameError(false)
-    }
-    if(email===""){
-        setEmailError(true)
-    }else{
-        setEmailError(false)
-    }
-    if(message===""){
-        setMessageError(true)
-    }else{
-        setMessageError(false)
-    }
-    if(name!="" && message!="" && email!=""){
-        const object={
-            name:{name},
-            email:{email},
-            message:{message}
-          }
-          handleClick(object);
-    }
+  const [nameError, setNameError] = React.useState(false);
+  const [messageError, setMessageError] = React.useState(false);
+  const [emailError, setEmailError] = React.useState(false);
 
-  }
+  const dataObj= {
+    address:{
+      text:"Comsats Univercity Lahore",
+      class:""
+    },
+    map:{
+      url:`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3405.413809808077!2d74.21044541462787!3d31.402723060084984!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3918ffd0bc7c5f71%3A0x879e9b82857bcd94!2sCOMSATS%20University%20Lahore!5e0!3m2!1sen!2s!4v1668300594394!5m2!1sen!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"`,
+     class:""
+    },
+    email:{
+      text:"abdulman@gmail.com",
+      class:""
+    },
+    phone:{
+      text:"233-233-2-233"
+    },
+    feedback:{
+      text:"Great University"
+    },
+    button:{
+      text:"Submit",
+      class:""
+    },
+    footer:{
+      text:"We will get back to you very soon",
+      class:""
+    }
+}
+const [data,setData] = React.useState(dataObj)
+
+const merge = (dst,src) => {
+  Object.keys(src).forEach((key) => {
+    if (!dst[key]) {
+      dst[key] = src[key];
+    } else if (typeof src[key] === 'object' && src[key] !== null && typeof dst[key] === 'object' && dst[key] !== null) {
+      merge(dst[key], src[key]);
+    }
+  })
+}
+React.useEffect( ()=>{
+  let p2 = JSON.parse(JSON.stringify(dataObj));
+  merge(p2,props)
+  setData(p2)
+},[])
+  const handleSubmit = () => {
+    if (name === "") {
+      setNameError(true);
+    } else {
+      setNameError(false);
+    }
+    if (email === "") {
+      setEmailError(true);
+    } else {
+      setEmailError(false);
+    }
+    if (message === "") {
+      setMessageError(true);
+    } else {
+      setMessageError(false);
+    }
+    if (name != "" && message != "" && email != "") {
+      const object = {
+        name: { name },
+        email: { email },
+        message: { message },
+      };
+      handleClick(object);
+    }
+  };
 
   return (
     <section className="text-gray-600 body-font relative">
       <div className="container px-5 py-24 mx-auto flex sm:flex-nowrap flex-wrap">
         <div className="lg:w-2/3 md:w-1/2 bg-gray-300 rounded-lg overflow-hidden sm:mr-10 p-10 flex items-end justify-start relative">
-        <iframe
+          <iframe
             width="100%"
             height="100%"
             className="absolute inset-0"
@@ -51,27 +94,27 @@ function LocationContactForm(prop) {
             marginheight="0"
             marginwidth="0"
             scrolling="no"
-            src={props.map.url}
-            style={{filter: "grayscale(0.5) contrast(1.3) opacity(0.7)"}}
+            src={data.map.url}
+            style={{ filter: "grayscale(0.5) contrast(1.3) opacity(0.7)" }}
           ></iframe>
           <div className="bg-white relative flex flex-wrap py-6 rounded shadow-md">
             <div className="lg:w-1/2 px-6">
               <h2 className="title-font font-semibold text-gray-900 tracking-widest text-xs">
                 ADDRESS
               </h2>
-              <p className="mt-1">
-                {props.address.text}
-              </p>
+              <p className="mt-1">{data.address.text}</p>
             </div>
             <div className="lg:w-1/2 px-6 mt-4 lg:mt-0">
               <h2 className="title-font font-semibold text-gray-900 tracking-widest text-xs">
                 EMAIL
               </h2>
-              <a className="text-indigo-500 leading-relaxed">{props.email.text}</a>
+              <a className="text-indigo-500 leading-relaxed">
+                {data.email.text}
+              </a>
               <h2 className="title-font font-semibold text-gray-900 tracking-widest text-xs mt-4">
                 PHONE
               </h2>
-              <p className="leading-relaxed">{props.phone.text}</p>
+              <p className="leading-relaxed">{data.phone.text}</p>
             </div>
           </div>
         </div>
@@ -80,54 +123,75 @@ function LocationContactForm(prop) {
             Feedback
           </h2>
           <p className="leading-relaxed mb-5 text-gray-600">
-            {props.feedback.text}
+            {data.feedback.text}
           </p>
           <div className="relative mb-4">
-            <label  className="leading-7 text-sm text-gray-600">
-              Name
-            </label>
+            <label className="leading-7 text-sm text-gray-600">Name</label>
             <input
-             onChange={e =>{ setName(e.target.value) ; setNameError(false)}}
+              onChange={(e) => {
+                setName(e.target.value);
+                setNameError(false);
+              }}
               type="text"
               id="name"
               name="name"
               className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             />
-            {nameError? <p className="text-red-700 text-sm">Please Enter Your Email</p>:<></>}
+            {nameError ? (
+              <p className="text-red-700 text-sm">Please Enter Your Email</p>
+            ) : (
+              <></>
+            )}
           </div>
           <div className="relative mb-4">
-            <label  className="leading-7 text-sm text-gray-600">
-              Email
-            </label>
+            <label className="leading-7 text-sm text-gray-600">Email</label>
             <input
-             onChange={e => {setEmail(e.target.value); setEmailError(false)}}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setEmailError(false);
+              }}
               type="email"
               id="email"
               name="email"
               className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             />
-            {emailError? <p className="text-red-700 text-sm">Please Enter Your Email</p>:<></>}
+            {emailError ? (
+              <p className="text-red-700 text-sm">Please Enter Your Email</p>
+            ) : (
+              <></>
+            )}
           </div>
           <div className="relative mb-4">
-            <label className="leading-7 text-sm text-gray-600">
-              Message
-            </label>
+            <label className="leading-7 text-sm text-gray-600">Message</label>
             <textarea
-             onChange={e => {setMessage(e.target.value);setMessageError(false);}}
+              onChange={(e) => {
+                setMessage(e.target.value);
+                setMessageError(false);
+              }}
               id="message"
               name="message"
               className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
             ></textarea>
-            {messageError? <p className="text-red-700 text-sm">Please Enter Message atleast for one word</p>:<></>}
+            {messageError ? (
+              <p className="text-red-700 text-sm">
+                Please Enter Message atleast for one word
+              </p>
+            ) : (
+              <></>
+            )}
           </div>
-          <button onClick={handleSubmit} className="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">
-            {props.button.text}
+          <button
+            data-mdb-ripple="true"
+            data-mdb-ripple-color="light"
+            onClick={handleSubmit}
+            className="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+          >
+            {data.button.text}
           </button>
-          <p className="text-xs text-gray-500 mt-3" >
-              {props.footer.text}
-          </p>
+          <p className="text-xs text-gray-500 mt-3">{data.footer.text}</p>
         </div>
       </div>
+      {children}
     </section>
   );
 }

@@ -1,6 +1,52 @@
 import React from "react";
 
 function SimpleContactForm(prop) {
+
+    const dataObj= {
+      body:{
+          text:"Feel Free to Contact Us~~",
+          class:""
+        },
+        address:{
+          text:"Comsats Univercity Lahore",
+          class:""
+        },
+        streetAddress:{
+          text:"34 street a for",
+          class:""
+        },
+        email:{
+          text:"abdulman@gmail.com",
+          class:""
+        },
+        phone:{
+          text:"233-233-2-233"
+        },
+        feedback:{
+          text:"Great University"
+        },
+        button:{
+          text:"Submit",
+          class:""
+        },
+  }
+
+  const [data,setData] = React.useState(dataObj)
+
+  const merge = (dst,src) => {
+    Object.keys(src).forEach((key) => {
+      if (!dst[key]) {
+        dst[key] = src[key];
+      } else if (typeof src[key] === 'object' && src[key] !== null && typeof dst[key] === 'object' && dst[key] !== null) {
+        merge(dst[key], src[key]);
+      }
+    })
+  }
+  React.useEffect( ()=>{
+    let p2 = JSON.parse(JSON.stringify(dataObj));
+    merge(p2,props)
+    setData(p2)
+  },[])
   const { props, children, handleClick, ...rest } = prop;
 
   const [name, setName] = React.useState("");
@@ -45,7 +91,7 @@ function SimpleContactForm(prop) {
             Contact Us
           </h1>
           <p className="lg:w-2/3 mx-auto leading-relaxed text-base">
-            {props.body.text}
+            {data.body.text}
           </p>
         </div>
         <div className="lg:w-1/2 md:w-2/3 mx-auto">
@@ -125,21 +171,22 @@ function SimpleContactForm(prop) {
               </div>
             </div>
             <div className="p-2 w-full">
-              <button onClick={handleSubmit} className="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">
-                {props.button.text}
+              <button  onClick={handleSubmit} className="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">
+                {data.button.text}
               </button>
             </div>
             <div className="p-2 w-full pt-8 mt-8 border-t border-gray-200 text-center">
-              <a className="text-indigo-500">{props.button.email}</a>
+              <a className="text-indigo-500">{data.button.email}</a>
               <p className="leading-normal my-5">
-                {props.address.text}
+                {data.address.text}
                 <br />
-                {props.streetAddress.text}
+                {data.streetAddress.text}
               </p>
             </div>
           </div>
         </div>
       </div>
+      {children}
     </section>
   );
 }
