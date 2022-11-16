@@ -1,24 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
-
+import LocationContactForm from './components/Contact/LocationContactForm/LocationContactForm';
+import SimpleContactForm from './components/Contact/SimpleContactForm/SimpleContactForm';
 function App() {
+
+  const data={
+        body:{
+          text:"Feel Free to Contact Us~~",
+          class:""
+        },
+        address:{
+          text:"Comsats Univercity Lahore",
+          class:""
+        },
+        streetAddress:{
+          text:"34 street a for",
+          class:""
+        },
+        email:{
+          text:"abdulman@gmail.com",
+          class:""
+        },
+        phone:{
+          text:"233-233-2-233"
+        },
+        feedback:{
+          text:"Great University"
+        },
+        button:{
+          text:"Submit",
+          class:""
+        },
+       
+
+  }
+
+  const handleClick = (object)=>{
+    console.log(object)
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+   <SimpleContactForm props={data} handleClick={handleClick}></SimpleContactForm>
   );
 }
 
