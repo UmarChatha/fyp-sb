@@ -110,7 +110,7 @@ function SideBarNavigation({children}) {
       <div
         className={`scrollbar h-screen overflow-hidden overflow-x-hidden overflow-y-auto p-5 bg-white h-screen p-5 pt-8  ${
           open ? "w-96 duration-300" : "w-20 duration-300"
-        } relative`}
+        } relative hidden md:block`}
       >
         <AiFillCaretLeft
           className={`text-gray-700 text-lg absolute right-1 top-3 cursor-pointer ${

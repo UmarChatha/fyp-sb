@@ -66,9 +66,10 @@ function App() {
   }
   return (
     <>
-  
+
      <SideBarNavigation>
      <TopNavigation></TopNavigation>
+
       <MainPanel>
       </MainPanel>
      
